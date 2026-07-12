@@ -57,12 +57,12 @@ services:
         fromService:
           name: bridgesmart-backend
           type: web
-          envVar: SECRET_KEY
+          envVarKey: SECRET_KEY
       - key: ENCRYPTION_KEY
         fromService:
           name: bridgesmart-backend
           type: web
-          envVar: ENCRYPTION_KEY
+          envVarKey: ENCRYPTION_KEY
       - key: OPENAI_API_KEY
         sync: true
 
