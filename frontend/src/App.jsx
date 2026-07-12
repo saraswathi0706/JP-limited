@@ -10,7 +10,9 @@ import {
   ResponsiveContainer, BarChart, Bar, Cell, PieChart, Pie
 } from 'recharts';
 
-const API_BASE = 'http://localhost:8000/api/v1';
+const API_BASE = import.meta.env.VITE_API_URL 
+  ? (import.meta.env.VITE_API_URL.endsWith('/api/v1') ? import.meta.env.VITE_API_URL : `${import.meta.env.VITE_API_URL.replace(/\/$/, '')}/api/v1`)
+  : 'http://localhost:8000/api/v1';
 
 // Setup local Axios config
 const api = axios.create({
