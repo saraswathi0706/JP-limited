@@ -21,7 +21,10 @@ except Exception:
     import os
     if not os.path.exists("/.dockerenv"):
         print("PostgreSQL connection failed. Falling back to local SQLite for host development.")
-        db_url = "sqlite:///./bridgesmart.db"
+        if os.getenv("VERCEL"):
+            db_url = "sqlite:////tmp/bridgesmart.db"
+        else:
+            db_url = "sqlite:///./bridgesmart.db"
         engine = create_engine(db_url)
     else:
         engine = create_engine(db_url)

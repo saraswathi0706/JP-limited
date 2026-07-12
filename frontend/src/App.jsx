@@ -12,7 +12,7 @@ import {
 
 const API_BASE = import.meta.env.VITE_API_URL 
   ? (import.meta.env.VITE_API_URL.endsWith('/api/v1') ? import.meta.env.VITE_API_URL : `${import.meta.env.VITE_API_URL.replace(/\/$/, '')}/api/v1`)
-  : 'http://localhost:8000/api/v1';
+  : (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' ? 'http://localhost:8000/api/v1' : '/api/v1');
 
 // Setup local Axios config
 const api = axios.create({
