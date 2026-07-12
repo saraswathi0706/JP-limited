@@ -67,7 +67,7 @@ services:
         sync: true
 
   # React Frontend (Static Site)
-  - type: web
+  - type: static
     name: bridgesmart-frontend
     runtime: static
     buildCommand: npm run build
