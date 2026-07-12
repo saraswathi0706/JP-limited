@@ -73,7 +73,6 @@ services:
     buildCommand: npm run build
     staticPublishPath: dist
     rootDirectory: frontend
-    plan: free
     envVars:
       - key: VITE_API_URL
         fromService:
