@@ -1,7 +1,7 @@
 databases:
   - name: bridgesmart-db
     databaseName: bridgesmart
-    user: postgres
+    userName: postgres
     plan: free
 
 services:
@@ -14,9 +14,9 @@ services:
   # FastAPI Backend
   - type: web
     name: bridgesmart-backend
-    env: docker
+    runtime: docker
     dockerContext: backend
-    dockerFilePath: backend/Dockerfile
+    dockerfilePath: backend/Dockerfile
     plan: free
     envVars:
       - key: DATABASE_URL
@@ -24,7 +24,10 @@ services:
           name: bridgesmart-db
           property: connectionString
       - key: REDIS_URL
-        value: redis://bridgesmart-redis:6379/0
+        fromService:
+          type: redis
+          name: bridgesmart-redis
+          property: connectionString
       - key: SECRET_KEY
         generateValue: true
       - key: ENCRYPTION_KEY
@@ -35,9 +38,9 @@ services:
   # Celery Async Worker
   - type: worker
     name: bridgesmart-celery-worker
-    env: docker
+    runtime: docker
     dockerContext: backend
-    dockerFilePath: backend/Dockerfile
+    dockerfilePath: backend/Dockerfile
     dockerCommand: celery -A app.tasks.celery_app worker --loglevel=info
     plan: free
     envVars:
@@ -46,7 +49,10 @@ services:
           name: bridgesmart-db
           property: connectionString
       - key: REDIS_URL
-        value: redis://bridgesmart-redis:6379/0
+        fromService:
+          type: redis
+          name: bridgesmart-redis
+          property: connectionString
       - key: SECRET_KEY
         fromService:
           name: bridgesmart-backend
@@ -63,9 +69,9 @@ services:
   # React Frontend (Static Site)
   - type: web
     name: bridgesmart-frontend
-    env: static
+    runtime: static
     buildCommand: npm run build
-    publishPath: dist
+    staticPublishPath: dist
     rootDirectory: frontend
     plan: free
     envVars:
